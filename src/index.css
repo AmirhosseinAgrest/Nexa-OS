@@ -1,0 +1,108 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 220 20% 96%;
+    --foreground: 220 15% 10%;
+
+    --card: 220 20% 98%;
+    --card-foreground: 220 15% 10%;
+
+    --popover: 220 20% 98%;
+    --popover-foreground: 220 15% 10%;
+
+    --primary: 210 100% 50%;
+    --primary-foreground: 220 20% 98%;
+    --primary-glow: 210 100% 60%;
+
+    --secondary: 40 95% 55%;
+    --secondary-foreground: 220 20% 98%;
+    --secondary-glow: 40 95% 65%;
+
+    --muted: 220 15% 88%;
+    --muted-foreground: 220 10% 40%;
+
+    --accent: 210 100% 50%;
+    --accent-foreground: 220 20% 98%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 220 20% 98%;
+
+    --border: 220 15% 85%;
+    --input: 220 15% 90%;
+    --ring: 210 100% 50%;
+
+    --radius: 0.75rem;
+
+    --glass: 220 20% 98% / 0.7;
+    --glass-border: 220 15% 80% / 0.4;
+
+    --gradient-primary: linear-gradient(135deg, hsl(210 100% 50%), hsl(210 100% 60%));
+    --gradient-gold: linear-gradient(135deg, hsl(40 95% 55%), hsl(40 95% 65%));
+    --gradient-dark: linear-gradient(180deg, hsl(220 20% 96%), hsl(220 20% 92%));
+    --wallpaper-gradient: linear-gradient(135deg, hsl(210 100% 95%), hsl(270 100% 95%), hsl(40 100% 95%));
+
+    --shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+    --glow-primary: 0 0 20px hsl(210 100% 50% / 0.3);
+    --glow-gold: 0 0 20px hsl(40 95% 55% / 0.3);
+
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .dark {
+    --background: 220 15% 8%;
+    --foreground: 220 15% 95%;
+
+    --card: 220 15% 12%;
+    --card-foreground: 220 15% 95%;
+
+    --popover: 220 15% 10%;
+    --popover-foreground: 220 15% 95%;
+
+    --primary: 210 100% 60%;
+    --primary-foreground: 220 15% 8%;
+    --primary-glow: 210 100% 70%;
+
+    --secondary: 45 100% 60%;
+    --secondary-foreground: 220 15% 8%;
+    --secondary-glow: 45 100% 70%;
+
+    --muted: 220 15% 15%;
+    --muted-foreground: 220 10% 60%;
+
+    --accent: 210 100% 60%;
+    --accent-foreground: 220 15% 95%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 220 15% 95%;
+
+    --border: 220 15% 20%;
+    --input: 220 15% 15%;
+    --ring: 210 100% 60%;
+
+    --glass: 220 15% 12% / 0.6;
+    --glass-border: 220 15% 30% / 0.3;
+
+    --gradient-primary: linear-gradient(135deg, hsl(210 100% 60%), hsl(210 100% 70%));
+    --gradient-gold: linear-gradient(135deg, hsl(45 100% 60%), hsl(45 100% 70%));
+    --gradient-dark: linear-gradient(180deg, hsl(220 15% 8%), hsl(220 15% 12%));
+    --wallpaper-gradient: linear-gradient(135deg, hsl(220 15% 10%), hsl(270 60% 15%), hsl(210 100% 20%));
+
+    --shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    --glow-primary: 0 0 20px hsl(210 100% 60% / 0.5);
+    --glow-gold: 0 0 20px hsl(45 100% 60% / 0.5);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
