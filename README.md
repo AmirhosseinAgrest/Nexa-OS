@@ -57,11 +57,11 @@ This project showcases advanced frontend development skills, including complex s
 
 | Desktop Environment | Start Menu & Search |
 |:-------------------:|:-------------------:|
-| ![Desktop](link-to-desktop-screenshot.png) | ![Start Menu](link-to-start-menu-screenshot.png) |
+| ![Desktop](screenshots/desktop.png) | ![Start Menu](screenshots/startmenu.png) |
 
 | File Explorer | Terminal & Paint |
 |:-------------------:|:-------------------:|
-| ![Files](link-to-files-screenshot.png) | ![Apps](link-to-apps-screenshot.png) |
+| ![Files](screenshots/files.png) | ![Apps](screenshots/apps.png) |
 
 ---
 
