@@ -3,7 +3,6 @@
 > **A fully functional, web-based operating system simulation built with React & TypeScript.**  
 > *Experience the fluidity of a desktop environment, right inside your browser.*
 
-[![Live Demo](https://img.shields.io/badge/Live_Demo-Visit_Nexa_OS-blue?style=for-the-badge&logo=vercel)](YOUR_DEPLOY_LINK_HERE)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![React](https://img.shields.io/badge/React-18-blue?style=flat-square&logo=react)](https://reactjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
