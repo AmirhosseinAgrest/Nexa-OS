@@ -5,6 +5,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import packageJson from '../../../../package.json';
 
 export const AboutApp = () => {
     const [activeTab, setActiveTab] = useState<'overview' | 'developer' | 'tech' | 'story'>('overview');
@@ -86,7 +87,9 @@ export const AboutApp = () => {
                             </div>
                             <div>
                                 <h1 className="text-4xl font-bold tracking-tight mb-1">Nexa OS</h1>
-                                <p className="text-xl text-muted-foreground font-light">Version 1.0.0 (Beta)</p>
+                                <p className="text-xl text-muted-foreground font-light">
+                                    Version {packageJson.version} (Beta)
+                                </p>
                             </div>
                         </div>
 

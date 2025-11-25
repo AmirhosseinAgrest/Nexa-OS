@@ -99,4 +99,5 @@ To run Nexa OS locally on your machine:
 ---
 
 > Built with ❤️ by Agrest.  
+
 > *Simulating the future, one pixel at a time.*
