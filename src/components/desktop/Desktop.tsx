@@ -11,6 +11,7 @@ import { AboutApp } from "./apps/AboutApp";
 import { SmartWidget } from "./widgets/SmartWidget";
 import { useTheme } from "@/contexts/ThemeContext";
 import { PaintApp } from "./apps/Paint";
+import { GameCenter } from "./apps/GameCenter";
 import { ContextMenu } from "./ContextMenu";
 import { StartMenu } from "./StartMenu";
 
@@ -24,6 +25,7 @@ const appComponents: Record<string, React.ComponentType> = {
   terminal: Terminal,
   paint: PaintApp,
   about: AboutApp,
+  GameCenter: GameCenter,
 };
 
 export const Desktop = () => {

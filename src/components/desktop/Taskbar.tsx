@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import {
   Settings, FolderOpen, FileText, Music, Globe,
   Layout, Power, Palette, Terminal as TerminalIcon,
-  AppWindow, Monitor, Info
+  AppWindow, Monitor, Info, Gamepad
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -24,6 +24,7 @@ export const apps: AppInfo[] = [
   { id: "terminal", name: "Terminal", icon: TerminalIcon, color: "text-gray-400" },
   { id: "settings", name: "Settings", icon: Settings, color: "text-slate-500" },
   { id: "about", name: "About", icon: Info, color: "text-slate-500" },
+  { id: "GameCenter", name: "arcade", icon: Gamepad, color: "text-slate-500" },
 ];
 
 interface TaskbarProps {
