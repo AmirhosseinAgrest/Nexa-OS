@@ -30,4 +30,8 @@ export const MobileWarning = ({ onContinue }: MobileWarningProps) => (
       Designed by Agrest
     </div>
   </div>
+<<<<<<< HEAD
 );
+=======
+);
+>>>>>>> f5d5eb86e14e0304daf65e69e1f9fe5fb5b06183
