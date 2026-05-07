@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {
-  Moon, Sun, Monitor, Lock, User, Image as ImageIcon,
-  Globe, Check, Upload, Shield, Smartphone
+  Moon, Sun, Monitor, Lock, User,
+  Globe, Check, Shield, Smartphone
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useTheme } from "@/contexts/ThemeContext";
+import { BackgroundEditor } from "../settings-components/BackgroundEditor";
 import { cn } from "@/lib/utils";
 import packageJson from '../../../../package.json';
 
@@ -46,7 +47,6 @@ export const Settings = () => {
   const { mode, setMode } = useTheme();
   const [activeTab, setActiveTab] = useState("appearance");
   const [password, setPassword] = useState("");
-  const [bgPreview, setBgPreview] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [systemName, setSystemName] = useState("");
   const [initials, setInitials] = useState("GU");
@@ -62,11 +62,6 @@ export const Settings = () => {
       setSystemName("Guest");
       setInitials("GU");
     }
-  }, []);
-
-  useEffect(() => {
-    const savedBg = localStorage.getItem("nexa_background");
-    if (savedBg) setBgPreview(savedBg);
   }, []);
 
   const savePassword = async () => {
@@ -85,19 +80,6 @@ export const Settings = () => {
       setPassword("");
       alert("Password secured successfully! 🔒");
     }, 800);
-  };
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = () => {
-      const base64 = reader.result as string;
-      localStorage.setItem("nexa_background", base64);
-      setBgPreview(base64);
-    };
-    reader.readAsDataURL(file);
   };
 
   const menuItems = [
@@ -162,28 +144,7 @@ export const Settings = () => {
 
             <div className="space-y-3 mt-6">
               <Label>Desktop Wallpaper</Label>
-              <div className="grid grid-cols-3 md:grid-cols-4 gap-4">
-                <div className="col-span-3 md:col-span-3 h-48 rounded-xl overflow-hidden border border-border/50 relative group shadow-inner bg-muted/50">
-                  {bgPreview ? (
-                    <img src={bgPreview} alt="Current Wallpaper" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center text-muted-foreground">
-                      No wallpaper set
-                    </div>
-                  )}
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
-                </div>
-
-                <div className="col-span-3 md:col-span-1">
-                  <label className="cursor-pointer h-48 flex flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed border-muted-foreground/25 hover:border-primary hover:bg-primary/5 transition-all group">
-                    <div className="p-3 rounded-full bg-muted group-hover:bg-background transition-colors shadow-sm">
-                      <Upload className="w-5 h-5 text-muted-foreground group-hover:text-primary" />
-                    </div>
-                    <span className="text-xs font-medium text-muted-foreground group-hover:text-primary">Upload New</span>
-                    <input type="file" accept="image/*" className="hidden" onChange={handleFileChange} />
-                  </label>
-                </div>
-              </div>
+              <BackgroundEditor />
             </div>
 
             <div className="space-y-3 mt-6">

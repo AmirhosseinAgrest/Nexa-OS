@@ -12,6 +12,7 @@ import { desktopDB } from "./services/desktopDB";
 import { findNextAvailablePosition } from "./utils/gridMath";
 import { useWindowManager } from "./hooks/useWindowManager";
 import { appComponents } from "./config/appRegistry";
+import { useBackground } from "@/hooks/useBackground";
 
 export const Desktop = () => {
   const { openWindows, activeWindowId, openApp, closeWindow, focusWindow } = useWindowManager();
@@ -19,7 +20,7 @@ export const Desktop = () => {
   const [desktopItems, setDesktopItems] = useState<DesktopItem[]>([]);
   const [selectedItemIds, setSelectedItemIds] = useState<string[]>([]);
   const [renamingItemId, setRenamingItemId] = useState<string | null>(null);
-  const [bgImage, setBgImage] = useState<string | null>("/default-wallpaper.png");
+  const { backgroundValue, backgroundType } = useBackground();
   const [showStartMenu, setShowStartMenu] = useState(false);
 
   const [selectionBox, setSelectionBox] = useState<{ startX: number, startY: number, currentX: number, currentY: number } | null>(null);
@@ -43,9 +44,6 @@ export const Desktop = () => {
       }
     };
     loadData();
-
-    const savedBg = localStorage.getItem("nexa_background");
-    if (savedBg) setBgImage(savedBg);
   }, []);
 
   useEffect(() => {
@@ -102,7 +100,7 @@ export const Desktop = () => {
 
   const handleIconMouseDown = (e: React.MouseEvent, item: DesktopItem) => {
     e.stopPropagation();
-    if (e.button !== 0) return; 
+    if (e.button !== 0) return;
 
     let newSelected = selectedItemIds;
     if (!selectedItemIds.includes(item.id)) {
@@ -178,10 +176,22 @@ export const Desktop = () => {
     dragOffset.current = {};
   };
 
+  const getBackgroundStyle = () => {
+    if (!backgroundValue) return { backgroundImage: "url('/default-wallpaper.png')" };
+
+    if (backgroundType === "solid") {
+      return { backgroundColor: backgroundValue };
+    }
+    if (backgroundType === "gradient") {
+      return { backgroundImage: backgroundValue };
+    }
+    return { backgroundImage: `url(${backgroundValue})` };
+  };
+
   return (
     <div
-      className="h-screen w-full overflow-hidden relative select-none bg-cover bg-center bg-no-repeat transition-colors duration-700"
-      style={{ backgroundImage: `url(${bgImage})` }}
+      className="h-screen w-full overflow-hidden relative select-none bg-cover bg-center bg-no-repeat transition-all duration-700"
+      style={getBackgroundStyle()}
       onMouseDown={handleDesktopMouseDown}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}

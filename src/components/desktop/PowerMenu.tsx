@@ -26,16 +26,14 @@ export const PowerMenu = ({ isOpen, onClose, position }: PowerMenuProps) => {
   const getMenuPosition = () => {
     if (!position) return { left: "20px", bottom: "80px" };
     
-    const menuWidth = 192; // min-w-48 = 12rem = 192px
+    const menuWidth = 192; 
     const windowWidth = window.innerWidth;
     let left = position.x;
     
-    // اگر منو از صفحه خارج می‌شه، به چپ بچسبونیم
     if (left + menuWidth > windowWidth - 16) {
       left = windowWidth - menuWidth - 16;
     }
     
-    // اگر خیلی به چپ چسبیده
     if (left < 16) left = 16;
     
     return {
