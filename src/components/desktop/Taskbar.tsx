@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   Settings, FolderOpen, FileText, Music, Globe,
   Layout, Power, Palette, Terminal as TerminalIcon,
@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { PowerMenu } from "./PowerMenu";
 import { SystemTray } from "./SystemTray";
+import { StartMenu } from "./StartMenu";
 
 export interface AppInfo {
   id: string;
@@ -34,7 +35,6 @@ interface TaskbarProps {
   onToggleStart: () => void;
 }
 
-
 export const Taskbar = ({
   onAppClick,
   activeApps,
@@ -44,28 +44,54 @@ export const Taskbar = ({
 
   const [isPowerMenuOpen, setIsPowerMenuOpen] = useState(false);
   const [hoveredApp, setHoveredApp] = useState<string | null>(null);
+  const [startMenuPosition, setStartMenuPosition] = useState({ x: 0, y: 0 });
+  const [powerMenuPosition, setPowerMenuPosition] = useState({ x: 0, y: 0 });
+  const startButtonRef = useRef<HTMLDivElement>(null);
+  const powerButtonRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (isStartOpen && startButtonRef.current) {
+      const rect = startButtonRef.current.getBoundingClientRect();
+      setStartMenuPosition({
+        x: rect.left,
+        y: rect.bottom
+      });
+    }
+  }, [isStartOpen]);
+
+  useEffect(() => {
+    if (isPowerMenuOpen && powerButtonRef.current) {
+      const rect = powerButtonRef.current.getBoundingClientRect();
+      setPowerMenuPosition({
+        x: rect.left,
+        y: rect.bottom
+      });
+    }
+  }, [isPowerMenuOpen]);
 
   return (
     <>
       <div className="fixed bottom-4 left-0 right-0 flex justify-center items-end z-[1000] pointer-events-none">
-
         <div className="pointer-events-auto flex items-center gap-4 px-4 py-3 mx-4 bg-background/60 backdrop-blur-2xl border border-white/10 rounded-2xl shadow-2xl transition-all duration-300 hover:bg-background/70">
-
           <div className="flex items-center gap-1">
-            <TaskbarButton
-              icon={Layout}
-              label="Start"
-              isActive={isStartOpen}
-              onClick={onToggleStart}
-            />
+            <div ref={startButtonRef}>
+              <TaskbarButton
+                icon={Layout}
+                label="Start"
+                isActive={isStartOpen}
+                onClick={onToggleStart}
+              />
+            </div>
             <div className="w-px h-8 bg-white/10 mx-1" />
-            <TaskbarButton
-              icon={Power}
-              label="Power"
-              onClick={() => setIsPowerMenuOpen(!isPowerMenuOpen)}
-              isActive={isPowerMenuOpen}
-              className="hover:bg-red-500/10 hover:text-red-500"
-            />
+            <div ref={powerButtonRef}>
+              <TaskbarButton
+                icon={Power}
+                label="Power"
+                onClick={() => setIsPowerMenuOpen(!isPowerMenuOpen)}
+                isActive={isPowerMenuOpen}
+                className="hover:bg-red-500/10 hover:text-red-500"
+              />
+            </div>
           </div>
 
           <div className="flex items-center gap-2 px-2">
@@ -119,14 +145,20 @@ export const Taskbar = ({
           <div className="flex items-center gap-2 pl-2 border-l border-white/10">
             <SystemTray />
           </div>
-
         </div>
       </div>
+
+      <StartMenu
+        isOpen={isStartOpen}
+        onClose={onToggleStart}
+        onAppClick={onAppClick}
+        position={startMenuPosition}
+      />
 
       <PowerMenu
         isOpen={isPowerMenuOpen}
         onClose={() => setIsPowerMenuOpen(false)}
-        position={{ x: 20, y: window.innerHeight - 80 }}
+        position={powerMenuPosition}
       />
     </>
   );

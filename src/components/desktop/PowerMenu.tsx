@@ -23,12 +23,35 @@ export const PowerMenu = ({ isOpen, onClose, position }: PowerMenuProps) => {
     onClose();
   };
 
+  const getMenuPosition = () => {
+    if (!position) return { left: "20px", bottom: "80px" };
+    
+    const menuWidth = 192; // min-w-48 = 12rem = 192px
+    const windowWidth = window.innerWidth;
+    let left = position.x;
+    
+    // اگر منو از صفحه خارج می‌شه، به چپ بچسبونیم
+    if (left + menuWidth > windowWidth - 16) {
+      left = windowWidth - menuWidth - 16;
+    }
+    
+    // اگر خیلی به چپ چسبیده
+    if (left < 16) left = 16;
+    
+    return {
+      left: `${left}px`,
+      bottom: `${window.innerHeight - position.y + 8}px`
+    };
+  };
+
+  const menuPosition = getMenuPosition();
+
   return (
     <>
-      <div className="fixed inset-0 z-50" onClick={onClose} />
+      <div className="fixed inset-0 z-[1100]" onClick={onClose} />
       <div
-        className="fixed z-50 backdrop-blur-glass bg-card/90 border border-border/50 rounded-lg shadow-glass p-2 animate-fade-in min-w-48"
-        style={{ left: `${position.x}px`, bottom: `${position.y}px` }}
+        className="fixed z-[1101] backdrop-blur-glass bg-card/90 border border-border/50 rounded-lg shadow-glass p-2 animate-fade-in min-w-48"
+        style={{ left: menuPosition.left, bottom: menuPosition.bottom }}
       >
         {options.map((option) => {
           const Icon = option.icon;

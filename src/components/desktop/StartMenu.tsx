@@ -8,11 +8,11 @@ interface StartMenuProps {
   isOpen: boolean;
   onClose: () => void;
   onAppClick: (appId: string) => void;
+  position?: { x: number; y: number };
 }
 
-export const StartMenu = ({ isOpen, onClose, onAppClick }: StartMenuProps) => {
+export const StartMenu = ({ isOpen, onClose, onAppClick, position }: StartMenuProps) => {
   const [searchTerm, setSearchTerm] = useState("");
-
   const [systemName, setSystemName] = useState("");
 
   useEffect(() => {
@@ -20,7 +20,7 @@ export const StartMenu = ({ isOpen, onClose, onAppClick }: StartMenuProps) => {
     if (storedName) {
       setSystemName(storedName);
     } else {
-      setSystemName("Guest"); 
+      setSystemName("Guest");
     }
   }, []);
 
@@ -30,19 +30,43 @@ export const StartMenu = ({ isOpen, onClose, onAppClick }: StartMenuProps) => {
 
   if (!isOpen) return null;
 
+  const getMenuPosition = () => {
+    if (!position) return { left: "1rem", bottom: "5rem" };
+    
+    const menuWidth = 400;
+    const windowWidth = window.innerWidth;
+    let left = position.x;
+    
+    if (left + menuWidth > windowWidth - 16) {
+      left = windowWidth - menuWidth - 16;
+    }
+    
+    if (left < 16) left = 16;
+    
+    return {
+      left: `${left}px`,
+      bottom: `${window.innerHeight - position.y + 8}px`
+    };
+  };
+
+  const menuPosition = getMenuPosition();
+
   return (
     <>
       <div className="fixed inset-0 z-[999] bg-transparent" onClick={onClose} />
 
       <div 
         className={cn(
-          "fixed bottom-20 left-4 z-[1000] w-[400px] h-[500px]",
-          "bg-background/80 backdrop-blur-2xl border border-white/10 rounded-xl shadow-2xl", 
-          "animate-in slide-in-from-bottom-10 fade-in duration-300" 
+          "fixed z-[1000] w-[400px] h-[500px]",
+          "bg-background/80 backdrop-blur-2xl border border-white/10 rounded-xl shadow-2xl",
+          "animate-in slide-in-from-bottom-10 fade-in duration-300"
         )}
+        style={{
+          left: menuPosition.left,
+          bottom: menuPosition.bottom,
+        }}
         onClick={(e) => e.stopPropagation()} 
       >
-        
         <div className="p-6 pb-2">
            <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
@@ -104,7 +128,6 @@ export const StartMenu = ({ isOpen, onClose, onAppClick }: StartMenuProps) => {
                 <Power className="w-5 h-5" />
             </button>
         </div>
-
       </div>
     </>
   );

@@ -259,12 +259,6 @@ export const Desktop = () => {
         onToggleStart={() => setShowStartMenu(!showStartMenu)}
       />
 
-      <StartMenu
-        isOpen={showStartMenu}
-        onClose={() => setShowStartMenu(false)}
-        onAppClick={openApp}
-      />
-
       {contextMenu && (
         <ContextMenu
           x={contextMenu.x}

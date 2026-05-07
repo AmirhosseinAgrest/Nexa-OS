@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.0] - 2026-05-07
+
+### Fixed
+- StartMenu positioning - now appears dynamically below Start button instead of fixed position
+- PowerMenu positioning - now appears dynamically below Power button
+- PowerMenu z-index issue - menu no longer appears behind Taskbar
+- Duplicate StartMenu rendering removed from Desktop component
+
+### Changed
+- Taskbar now passes dynamic positions to both StartMenu and PowerMenu
+- Added edge detection to prevent menus from going off-screen
+- Improved menu positioning logic for better UX
+
 ## [1.2.0] - 2025-12-01
 ### Added 🚀
 - **Desktop Folders:** Create, rename, and delete folders directly on the desktop.
