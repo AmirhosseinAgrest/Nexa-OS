@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -11,8 +12,10 @@ import { BackgroundProvider } from "./contexts/BackgroundContext";
 const queryClient = new QueryClient();
 
 const App = () => {
-  if (window.innerWidth < 768) {
-    return <MobileWarning />;
+  const [showMobileWarning, setShowMobileWarning] = useState(true);
+
+  if (window.innerWidth < 768 && showMobileWarning) {
+    return <MobileWarning onContinue={() => setShowMobileWarning(false)} />;
   }
 
   return (

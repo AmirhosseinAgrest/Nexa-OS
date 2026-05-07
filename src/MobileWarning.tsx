@@ -2,7 +2,7 @@ import React from "react";
 import { Monitor } from "lucide-react";
 
 interface MobileWarningProps {
-  onContinue: () => void;
+  onContinue?: () => void;
 }
 
 export const MobileWarning = ({ onContinue }: MobileWarningProps) => (
@@ -13,10 +13,16 @@ export const MobileWarning = ({ onContinue }: MobileWarningProps) => (
 
     <h1 className="text-2xl font-bold mb-4">Nexa OS Desktop Experience</h1>
 
-    <p className="text-gray-400 mb-8 leading-relaxed">
+    <p className="text-gray-400 mb-4 leading-relaxed max-w-md">
       This project is designed to showcase the power of web development in a desktop-like environment.
       <br />
-      For the best and most complete experience, please use a <strong>computer or laptop</strong>.
+      For the best and most complete experience, please use a <strong className="text-white">computer or laptop</strong>.
+    </p>
+
+    <p className="text-sm text-blue-400 mb-6 max-w-md">
+      On mobile: For a better experience, you can enable <strong>"Desktop Site"</strong> option in your browser settings (Chrome, Firefox, Safari).
+      <br />
+      You may also continue without changing anything.
     </p>
 
     <button
@@ -26,7 +32,7 @@ export const MobileWarning = ({ onContinue }: MobileWarningProps) => (
       Continue Anyway
     </button>
 
-    <div className="text-xs text-gray-600 mt-auto">
+    <div className="text-xs text-gray-600 mt-auto pt-8">
       Designed by Agrest
     </div>
   </div>
