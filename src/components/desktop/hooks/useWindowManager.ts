@@ -18,6 +18,7 @@ interface OpenWindow {
 export const useWindowManager = () => {
   const [openWindows, setOpenWindows] = useState<OpenWindow[]>([]);
   const [activeWindowId, setActiveWindowId] = useState<string | null>(null);
+  const [minimizedWindows, setMinimizedWindows] = useState<Set<string>>(new Set());
 
   const openApp = (appId: string, props?: any) => {
     const allowMultiple = appId === "video-player" || appId === "explorer";
@@ -25,6 +26,11 @@ export const useWindowManager = () => {
 
     if (existingWindow) {
       setActiveWindowId(existingWindow.id);
+      setMinimizedWindows(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(existingWindow.id);
+        return newSet;
+      });
     } else {
       let appInfo: AppInfo | undefined = apps.find((a) => a.id === appId);
 
@@ -44,6 +50,11 @@ export const useWindowManager = () => {
 
       setOpenWindows((prev) => [...prev, newWindow]);
       setActiveWindowId(newWindow.id);
+      setMinimizedWindows(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(newWindow.id);
+        return newSet;
+      });
     }
   };
 
@@ -59,11 +70,43 @@ export const useWindowManager = () => {
       }
       return remaining;
     });
+    
+    setMinimizedWindows(prev => {
+      const newSet = new Set(prev);
+      newSet.delete(id);
+      return newSet;
+    });
   };
 
   const focusWindow = (id: string) => {
     setActiveWindowId(id);
   };
 
-  return { openWindows, activeWindowId, openApp, closeWindow, focusWindow };
+  const minimizeWindow = (id: string) => {
+    setMinimizedWindows(prev => new Set(prev).add(id));
+    if (activeWindowId === id) {
+      const lastActive = [...openWindows].reverse().find(w => !minimizedWindows.has(w.id) && w.id !== id);
+      setActiveWindowId(lastActive?.id || null);
+    }
+  };
+
+  const restoreWindow = (id: string) => {
+    setMinimizedWindows(prev => {
+      const newSet = new Set(prev);
+      newSet.delete(id);
+      return newSet;
+    });
+    setActiveWindowId(id);
+  };
+
+  return { 
+    openWindows, 
+    activeWindowId, 
+    openApp, 
+    closeWindow, 
+    focusWindow, 
+    minimizeWindow, 
+    restoreWindow, 
+    minimizedWindows 
+  };
 };

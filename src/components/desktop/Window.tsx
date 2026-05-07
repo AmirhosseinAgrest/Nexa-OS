@@ -9,41 +9,43 @@ interface WindowProps {
   icon?: React.ElementType;
   children: React.ReactNode;
   onClose: () => void;
+  onMinimize?: () => void;
   isActive: boolean;
   onFocus: () => void;
   initialPosition?: { x: number; y: number };
 }
 
-export const Window = ({ 
-  id, 
-  title, 
-  icon: Icon, 
-  children, 
-  onClose, 
-  isActive, 
-  onFocus, 
-  initialPosition 
+export const Window = ({
+  id,
+  title,
+  icon: Icon,
+  children,
+  onClose,
+  onMinimize,
+  isActive,
+  onFocus,
+  initialPosition
 }: WindowProps) => {
 
   const [position, setPosition] = useState(initialPosition || { x: 100 + Math.random() * 50, y: 50 + Math.random() * 50 });
   const [size, setSize] = useState({ width: 800, height: 600 });
-  
+
   const [isMaximized, setIsMaximized] = useState(false);
-  const [isClosing, setIsClosing] = useState(false); 
-  const [isOpening, setIsOpening] = useState(true);  
+  const [isClosing, setIsClosing] = useState(false);
+  const [isOpening, setIsOpening] = useState(true);
 
   const [isDragging, setIsDragging] = useState(false);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
 
   const [isResizing, setIsResizing] = useState(false);
-  const resizeDir = useRef<string | null>(null); 
+  const resizeDir = useRef<string | null>(null);
   const startResizePos = useRef({ x: 0, y: 0, w: 0, h: 0, mx: 0, my: 0 });
-  
+
   const preMaximizeState = useRef({ x: 0, y: 0, width: 0, height: 0 });
   const windowRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const timer = setTimeout(() => setIsOpening(false), 300); 
+    const timer = setTimeout(() => setIsOpening(false), 300);
     return () => clearTimeout(timer);
   }, []);
 
@@ -54,14 +56,14 @@ export const Window = ({
       if (isDragging) {
         let newX = e.clientX - dragOffset.x;
         let newY = e.clientY - dragOffset.y;
-        
-        if (newY < 0) newY = 0; 
-        
+
+        if (newY < 0) newY = 0;
+
         setPosition({ x: newX, y: newY });
       }
 
       if (isResizing && resizeDir.current) {
-        const dx = e.clientX - startResizePos.current.mx; 
+        const dx = e.clientX - startResizePos.current.mx;
         const dy = e.clientY - startResizePos.current.my;
         const start = startResizePos.current;
 
@@ -75,15 +77,15 @@ export const Window = ({
 
         if (resizeDir.current.includes("e")) newW = Math.max(MIN_W, start.w + dx);
         if (resizeDir.current.includes("s")) newH = Math.max(MIN_H, start.h + dy);
-        
+
         if (resizeDir.current.includes("w")) {
           const proposedWidth = Math.max(MIN_W, start.w - dx);
           if (proposedWidth > MIN_W) {
-             newW = proposedWidth;
-             newX = start.x + dx;
+            newW = proposedWidth;
+            newX = start.x + dx;
           } else {
-             newW = MIN_W;
-             newX = start.x + (start.w - MIN_W);
+            newW = MIN_W;
+            newX = start.x + (start.w - MIN_W);
           }
         }
 
@@ -155,24 +157,24 @@ export const Window = ({
       setSize({ width: preMaximizeState.current.width, height: preMaximizeState.current.height });
     } else {
       preMaximizeState.current = { x: position.x, y: position.y, width: size.width, height: size.height };
-      
+
       setIsMaximized(true);
       setPosition({ x: 0, y: 0 });
-      setSize({ width: window.innerWidth, height: window.innerHeight - 48 }); 
+      setSize({ width: window.innerWidth, height: window.innerHeight - 48 });
     }
     onFocus();
   };
 
   const handleClose = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setIsClosing(true); 
-    
+    setIsClosing(true);
+
     setTimeout(() => {
       onClose();
-    }, 200); 
+    }, 200);
   };
 
-  const transitionStyle = (isDragging || isResizing) ? 'none' : 'all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1)'; 
+  const transitionStyle = (isDragging || isResizing) ? 'none' : 'all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1)';
 
   return (
     <div
@@ -190,8 +192,8 @@ export const Window = ({
         top: position.y,
         width: size.width,
         height: size.height,
-        transition: transitionStyle, 
-        willChange: (isDragging || isResizing) ? "left, top, width, height" : "auto" 
+        transition: transitionStyle,
+        willChange: (isDragging || isResizing) ? "left, top, width, height" : "auto"
       }}
       onMouseDown={onFocus}
     >
@@ -206,19 +208,22 @@ export const Window = ({
       >
         <div className="flex items-center gap-3 opacity-90 pointer-events-none">
           {Icon && (
-             <div className={cn("p-1.5 rounded-md transition-colors", isActive ? "bg-primary/20 text-primary" : "bg-muted text-muted-foreground")}>
-                <Icon className="h-4 w-4" />
-             </div>
+            <div className={cn("p-1.5 rounded-md transition-colors", isActive ? "bg-primary/20 text-primary" : "bg-muted text-muted-foreground")}>
+              <Icon className="h-4 w-4" />
+            </div>
           )}
           <span className="text-sm font-medium tracking-wide text-foreground/90">{title}</span>
         </div>
-        
-        <div className="flex items-center gap-2">
+
+        <div className="flex items-center gap-2"> 
           <Button
             variant="ghost"
             size="icon"
             className="h-8 w-8 rounded-full hover:bg-white/10 text-muted-foreground hover:text-foreground transition-all"
-            onClick={(e) => { e.stopPropagation(); }}
+            onClick={(e) => {
+              e.stopPropagation();
+              onMinimize?.();
+            }}
           >
             <Minus className="h-4 w-4" />
           </Button>
@@ -244,11 +249,11 @@ export const Window = ({
       </div>
 
       <div className="flex-1 overflow-hidden relative bg-background/40">
-         {(!isActive || isDragging || isResizing) && <div className="absolute inset-0 bg-transparent z-10" />}
-         
-         <div className="h-full w-full overflow-auto custom-scrollbar">
-            {children}
-         </div>
+        {(!isActive || isDragging || isResizing) && <div className="absolute inset-0 bg-transparent z-10" />}
+
+        <div className="h-full w-full overflow-auto custom-scrollbar">
+          {children}
+        </div>
       </div>
 
       {!isMaximized && (

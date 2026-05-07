@@ -15,7 +15,7 @@ import { appComponents } from "./config/appRegistry";
 import { useBackground } from "@/hooks/useBackground";
 
 export const Desktop = () => {
-  const { openWindows, activeWindowId, openApp, closeWindow, focusWindow } = useWindowManager();
+  const { openWindows, activeWindowId, openApp, closeWindow, focusWindow, minimizeWindow, restoreWindow, minimizedWindows } = useWindowManager();
 
   const [desktopItems, setDesktopItems] = useState<DesktopItem[]>([]);
   const [selectedItemIds, setSelectedItemIds] = useState<string[]>([]);
@@ -232,21 +232,31 @@ export const Desktop = () => {
       {openWindows.map((window) => {
         const AppComponent = appComponents[window.appId];
         if (!AppComponent) return null;
+        const isMinimized = minimizedWindows.has(window.id);
+
         return (
-          <Window
+          <div
             key={window.id}
-            id={window.id}
-            title={window.title}
-            icon={window.icon}
-            onClose={() => closeWindow(window.id)}
-            isActive={activeWindowId === window.id}
-            onFocus={() => focusWindow(window.id)}
+            style={{ display: isMinimized ? 'none' : 'block' }}
           >
-            <AppComponent
-              {...window.props}
-              onOpenApp={openApp}
-            />
-          </Window>
+            <Window
+              id={window.id}
+              title={window.title}
+              icon={window.icon}
+              onClose={() => closeWindow(window.id)}
+              onMinimize={() => minimizeWindow(window.id)}
+              isActive={activeWindowId === window.id}
+              onFocus={() => {
+                restoreWindow(window.id);
+                focusWindow(window.id);
+              }}
+            >
+              <AppComponent
+                {...window.props}
+                onOpenApp={openApp}
+              />
+            </Window>
+          </div>
         );
       })}
 

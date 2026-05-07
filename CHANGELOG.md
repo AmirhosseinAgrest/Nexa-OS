@@ -2,6 +2,53 @@
 
 All notable changes to this project will be documented in this file.
 
+## What's Changed in v1.5.0
+
+### ✨ New Features
+- **Window Minimize** - Now you can minimize windows to taskbar
+- **Smooth Animation** - Beautiful scale-down animation when minimizing
+- **State Preservation** - Window content and state are preserved when minimized/restored
+
+### 🐛 Bug Fixes
+- Fixed minimize button not working
+- Fixed window state resetting when restored from minimized state
+- Fixed difference between minimize and close behavior
+
+### 🏗️ Technical Improvements
+- Added `minimizeWindow` and `restoreWindow` functions to useWindowManager
+- Added `minimizedWindows` state for tracking
+- Window component now uses `display: none` instead of DOM removal for minimizing
+- Added optional `onMinimize` prop to Window component
+
+## What's Changed in v1.4.1
+
+### 🐛 Bug Fixes
+- Fixed TypeScript error: "Property 'onContinue' is missing in type '{}'"
+- MobileWarning now properly accepts optional onContinue prop
+
+### ✨ Improvements
+- Added state management for mobile warning dismissal
+- Users can now dismiss mobile warning by clicking "Continue Anyway"
+- Improved mobile warning UI with better instructions
+
+## What's Changed in v1.4.0
+
+### ✨ New Features
+- **Advanced Background System** with real-time updates (no refresh needed!)
+- **Solid Color Backgrounds** - choose any color with color picker
+- **5 Gradient Presets** - Sunset, Ocean, Midnight, Fire, Forest
+- **Reset to Default** button to restore original wallpaper
+- **Live Preview** of background changes in Settings
+
+### 🐛 Bug Fixes
+- Fixed background not updating until page refresh
+- Fixed background state management
+
+### 🏗️ Technical Improvements
+- Added `BackgroundContext` for centralized state management
+- Added `useBackground` custom hook
+- Created `BackgroundEditor` component for clean code organization
+
 ## [1.3.0] - 2026-05-07
 
 ### Fixed
